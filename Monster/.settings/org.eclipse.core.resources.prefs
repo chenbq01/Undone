@@ -1,0 +1,4 @@
+eclipse.preferences.version=1
+encoding//src/main/resources/META-INF/spring/data/mongodb/data-mongodb.properties=UTF-8
+encoding//src/main/resources/META-INF/spring/data/redis/data-redis.properties=UTF-8
+encoding/<project>=UTF-8
