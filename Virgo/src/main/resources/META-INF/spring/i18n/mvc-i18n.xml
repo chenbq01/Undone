@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!-- 配置资源文件开始 -->
+	<bean id="messageSource"
+		class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<property name="basename" value="classpath:/META-INF/i18n/message-info" />
+		<!-- <property name="basenames"> <list> <value>classpath:/META-INF/i18n/view-message-info</value> 
+			<value>classpath:/META-INF/i18n/error-message-info</value> </list> </property> -->
+	</bean>
+	<!-- 配置资源文件结束 -->
+
+	<!-- 配置Resolver开始 -->
+	<!-- 固定不变 不能在系统运行时动态更改 -->
+	<!-- <bean id="localeResolver" class="org.springframework.web.servlet.i18n.FixedLocaleResolver" 
+		/> -->
+	<!-- 基于Session -->
+	<!-- <bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver" 
+		/> -->
+	<!-- 基于Request -->
+	<!-- <bean id="localeResolver" class="org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver" 
+		/> -->
+	<!-- 基于Cookie -->
+	<bean id="localeResolver"
+		class="org.springframework.web.servlet.i18n.CookieLocaleResolver" />
+	<!-- 配置Resolver结束 -->
+
+	<!-- 配置拦截器开始 -->
+	<bean id="localeChangeInterceptor"
+		class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+		<property name="paramName" value="_lang" />
+	</bean>
+	<!-- 配置拦截器结束 -->
+
+</beans>

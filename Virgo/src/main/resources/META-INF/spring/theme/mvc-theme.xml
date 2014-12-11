@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!-- 配置主题文件开始 -->
+	<bean id="themeSource"
+		class="org.springframework.ui.context.support.ResourceBundleThemeSource">
+		<!-- <property name="basenamePrefix" value="constellation.virgo.spring.template.theme." /> -->
+		<property name="basenamePrefix" value="META-INF/theme/" />
+	</bean>
+	<!-- 配置资源文件结束 -->
+
+	<!-- 配置Resolver开始 -->
+	<!-- 固定不变 不能在系统运行时动态更改 -->
+	<!-- <bean id="themeResolver" class="org.springframework.web.servlet.theme.FixedThemeResolver"> 
+		<property name="defaultThemeName" value="gold" /> </bean> -->
+	<!-- 基于Session -->
+	<!-- <bean id="themeResolver" class="org.springframework.web.servlet.theme.SessionThemeResolver"> 
+		<property name="defaultThemeName" value="gold" /> </bean> -->
+	<!-- 基于Cookie -->
+	<bean id="themeResolver"
+		class="org.springframework.web.servlet.theme.CookieThemeResolver">
+		<property name="defaultThemeName" value="gold" />
+	</bean>
+	<!-- 配置Resolver结束 -->
+
+	<!-- 配置拦截器开始 -->
+	<bean id="themeChangeInterceptor"
+		class="org.springframework.web.servlet.theme.ThemeChangeInterceptor">
+		<property name="paramName" value="_theme" />
+	</bean>
+	<!-- 配置拦截器结束 -->
+
+</beans>

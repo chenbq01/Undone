@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/task"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.0.xsd">
+
+	<!-- spring内置任务调度配置开始 -->
+	<!-- 可选择注解方式和配置文件方式 -->
+
+	<!-- 注解方式开始 -->
+	<!-- 配置识别@Scheduled注解开始 -->
+	<!-- <annotation-driven /> -->
+	<!-- 配置识别@Scheduled注解结束 -->
+	<!-- 注解方式结束 -->
+
+	<!-- 配置文件方式开始 -->
+	<scheduled-tasks>
+		<scheduled ref="taskJob" method="job" cron="0/5 * * * * ?" />
+	</scheduled-tasks>
+	<!-- 配置文件方式结束 -->
+	<!-- spring内置任务调度配置结束 -->
+
+	<!-- quartz任务调度配置开始 -->
+	<!-- 线程执行器配置，用于任务注册 -->
+	<beans:bean id="threadPoolTaskExecutor"
+		class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+		<beans:property name="corePoolSize" value="10" />
+		<beans:property name="maxPoolSize" value="100" />
+		<beans:property name="queueCapacity" value="500" />
+	</beans:bean>
+
+	<!-- 定义调用对象和调用对象的方法 -->
+	<beans:bean id="methodInvokingJobDetailFactoryBean"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<!-- 调用的类 -->
+		<beans:property name="targetObject">
+			<beans:ref bean="taskJob" />
+		</beans:property>
+		<!-- 调用类中的方法 -->
+		<beans:property name="targetMethod">
+			<beans:value>quartzJob</beans:value>
+		</beans:property>
+	</beans:bean>
+	<!-- 定义触发时间 -->
+	<beans:bean id="cronTriggerFactoryBean"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<beans:property name="jobDetail">
+			<beans:ref bean="methodInvokingJobDetailFactoryBean" />
+		</beans:property>
+		<!-- cron表达式 -->
+		<beans:property name="cronExpression">
+			<beans:value>0/10 * * * * ?</beans:value>
+		</beans:property>
+	</beans:bean>
+	<!-- 总管理类 如果将lazy-init='false'那么容器启动就会执行调度程序 -->
+	<beans:bean id="startQuertz" lazy-init="false" autowire="no"
+		class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<beans:property name="triggers">
+			<beans:list>
+				<beans:ref bean="cronTriggerFactoryBean" />
+			</beans:list>
+		</beans:property>
+		<beans:property name="taskExecutor">
+			<beans:ref bean="threadPoolTaskExecutor" />
+		</beans:property>
+		<beans:property name="configLocation">
+			<beans:value>classpath:/META-INF/spring/scheduledtasks/spring-scheduledtask.properties
+			</beans:value>
+		</beans:property>
+	</beans:bean>
+	<!-- quartz任务调度配置开始 -->
+
+</beans:beans>
