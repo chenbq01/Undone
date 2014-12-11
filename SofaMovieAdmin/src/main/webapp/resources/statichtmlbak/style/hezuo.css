@@ -1,0 +1,99 @@
+@charset "utf-8";
+/* CSS Document */
+/*************************************
+* file name：hezuo.css
+* personnel：韩志军
+* date：2014-04-24
+* contact：hanzhijun@hipiao.com
+* content：页面制作样式库文件-业务合作样式
+************************************/
+.hezuo_l {
+	width:118px;
+	overflow:hidden;
+	float:left;
+	*margin-top:88px;
+}
+.hezuoTt {
+	line-height:36px;
+	padding-right:9px;
+	text-align:center;
+	color:#0071c5;
+	font-size:18px;
+}
+ul.bank_nav3 {
+	width:108px;
+	height:350px;
+	border-right:1px solid #BBBBBB;
+	padding-top:20px;
+}
+ul.bank_nav3 li {
+	width:108px;
+	height:42px;
+	position:relative;
+}
+ul.bank_nav3 li img {
+	position:absolute;
+	right:-2px;
+	top:10px;
+	display:none;
+}
+ul.bank_nav3 li p {
+	padding-right:27px;
+	text-align:left;
+	line-height:42px;
+}
+ul.bank_nav3 li p a {
+	padding-bottom:10px;
+	border-bottom:1px solid #5f5f5f;
+	padding-left:25px;
+	padding-top:10px;
+	font-size:14px;
+}
+ul.bank_nav3 li.hover p a {
+	color:#0071c5;
+	text-decoration:none;
+}
+ul.bank_nav3 li.hover img {
+	display:block;
+}
+.hezuo_r {
+	width:805px;
+	float:right;
+	overflow:hidden;
+	margin-top:40px;
+	*margin-top:128px;
+}
+ul.hezuoUl {
+	width:708px;
+}
+ul.hezuoUl li {
+}
+h3.hezuoliTt { line-height:44px; font-size:16px; padding-left:25px; padding-right:65px; font-weight:normal;}
+p.hezuoliNr { line-height:22px; font-size:13px; padding-left:25px; padding-right:65px; padding-bottom:15px;}
+
+/*关注沙发院线*/
+.weixinQu {
+	width:176px;
+	height:300px;
+	float:left;
+	margin-left:50px;
+	margin-top:50px;
+	text-align:center;
+	line-height:20px;
+	font-size:13px;
+}
+.weiboQu {
+	width:176px;
+	height:300px;
+	float:left;
+	margin-left:175px;
+	margin-top:50px;
+	text-align:center;
+	line-height:20px;
+	font-size:13px;
+}
+.weixinPic,
+.weiboPic {
+	margin-top:20px;
+	margin-bottom:10px;
+}

@@ -1,0 +1,493 @@
+@charset "utf-8";
+/* CSS Document */
+/*************************************
+* file name：zhinan.css
+* personnel：韩志军
+* date：2014-04-23
+* contact：hanzhijun@hipiao.com
+* content：页面制作样式库文件-使用指南样式
+************************************/
+.zhinan_l {
+	width:158px;
+	overflow:hidden;
+	float:left;
+	*margin-top:88px;
+}
+.zhinanTt {
+	line-height:36px;
+	padding-right:9px;
+	text-align:center;
+	color:#0071c5;
+	font-size:18px;
+}
+ul.bank_nav3 li {
+	width:158px;
+	height:152px;
+	margin-bottom:1px;
+	*margin-bottom:-3px;
+	background:url(../images/l-daobj.png) no-repeat 0 0;
+	cursor:pointer;
+}
+ul.bank_nav3 li p {
+	padding-top:40px;
+	padding-left:53px;
+	text-align:left;
+}
+ul.bank_nav3 li.hover {
+	background:url(../images/l-daobj.png) no-repeat 0 -152px;
+}
+.zhinan_r {
+	width:755px;
+	float:right;
+	overflow:hidden;
+	*margin-top:88px;
+}
+p.wenziDh {
+	padding:55px 40px 30px 0;
+	text-align:right;
+	line-height:18px;
+	font-size:16px;
+}
+p.wenziDh a {
+	text-decoration:underline;
+}
+p.wenziDh a.thisOver {
+	color:#0071c5;
+	text-decoration:none;
+}
+.xiazaiQu {
+	width:570px;
+	height:365px;
+	margin-left:87px;
+	position:relative;
+}
+	.xiazaiQu .maQu {
+		width:176px;
+		height:176px;
+		position:absolute;
+		left:0;
+		top:0;
+	}
+	.xiazaiQu .tishiQu {
+		width:176px;
+		height:70px;
+		position:absolute;
+		left:0;
+		top:193px;
+	}
+	.xiazaiQu .tishiQu p {
+		text-align:center;
+		line-height:22px;
+	}
+	.xiazaiQu .tishiQu p strong {
+		font-size:13px;
+	}
+	.xiazaiQu .xiazaiBtn {
+		width:179px;
+		height:41px;
+		position:absolute;
+		left:304px;
+		top:75px;
+	}
+	.xiazaiQu .tishi2 {
+		width:179px;
+		height:44px;
+		position:absolute;
+		left:304px;
+		top:193px;
+	}
+	.xiazaiQu .tishi2 p {
+		text-align:center;
+		line-height:22px;
+	}
+	.xiazaiQu .tishi3 {
+		width:556px;
+		height:30px;
+		position:absolute;
+		left:0;
+		top:338px;
+		text-align:center;
+		font-size:14px;
+	}
+p.dianhua {
+	padding-right:40px;
+	text-align:right;
+	font-size:14px;
+	line-height:36px;
+}
+.bootQu {
+	height:178px;
+	overflow:hidden;
+}
+	.bootQu img {
+		float:left;
+	}
+	.bootQu span {
+		display:block;
+		width:26px;
+		height:27px;
+		background-image:url(../images/jianTou2.jpg);
+		float:left;
+		margin-left:12px;
+		margin-right:12px;
+		margin-top:78px;
+	}
+.zhinanTt2 {
+	width:707px;
+	height:29px;
+	margin-top:17px;
+	font-size:20px;
+	border-bottom:1px solid #5d5c5c;
+}
+.zhinanTt2 span {
+	display:inline-block;
+	float:right;
+	margin-top:10px;
+	font-size:12px;
+}
+.xuanzeQu {
+	position:relative;
+}
+.xuanZ1 {
+	width:150px;
+	height:250px;
+	float:left;
+	overflow:hidden;
+}
+#xuanZ1 {
+	width:150px;
+	height:250px;
+	float:left;
+	overflow:hidden;
+}
+#xuanZ2 {
+	width:292px;
+	height:250px;
+	float:left;
+}
+#xuanZ3 {
+	width:292px;
+	height:250px;
+	float:left;
+}
+#xuanZ4 {
+	width:150px;
+	height:250px;
+	float:left;
+	overflow:hidden;
+}
+#xuanZ5 {
+	width:292px;
+	height:250px;
+	float:left;
+	position:relative;
+}
+#xuanZ5 span#tishi01 {
+	background-color:#def3fe;
+	line-height:18px;
+	padding-left:3px;
+	padding-right:3px;
+	border:1px solid #757575;
+	left:60px;
+  position:absolute;
+  top:25px;
+	display:none;
+}
+#xuanZ6 {
+	width:292px;
+	min-height:220px;
+	float:left;
+	position:relative;
+	overflow:hidden;
+}
+#xuanZ6 span#tishi02 {
+	background-color:#def3fe;
+	line-height:18px;
+	padding-left:3px;
+	padding-right:3px;
+	border:1px solid #757575;
+	left:18px;
+  position:absolute;
+  top:25px;
+	display:none;
+}
+p.xuanP {
+	line-height:30px;
+	font-size:14px;
+	text-align:center;
+	padding-right:30px;
+}
+p.pindaoHao {
+	line-height:30px;
+	font-size:14px;
+	text-align:center;
+	padding-right:30px;
+}
+p.pindaoName {
+	line-height:30px;
+	font-size:14px;
+	text-align:center;
+	padding-right:30px;
+}
+ul.dianboPd {
+	margin-left:60px;
+}
+ul.dianboPd li {
+	line-height:30px;
+}
+ul.dianboPd li strong {
+	font-size:14px;
+}
+ul.dianboPd li span {
+	font-size:14px;
+}
+a.xialaK {
+	width:119px;
+	height:22px;
+	line-height:22px;
+	text-indent:3px;
+	display:block;
+	background:url(../images/xialaKbj.jpg) no-repeat 0 0;
+}
+a.xialaK:hover {
+	text-decoration:none;
+}
+.xuanzeQu .thisOver .xialaK {
+	background:url(../images/xialaKbj.jpg) no-repeat bottom left;
+}
+.fuKuang {
+	margin-top:-1px;
+	display:inline-block;
+	border: 1px solid #5d5c5c;
+	position:absolute;
+	min-width:117px;
+	background-color:#FFF;
+}
+ul.fuKuangUl {
+	min-width:117px;
+}
+ul.fuKuangUl li {
+	min-width:112px;
+	height:28px;
+	line-height:28px;
+	border-top:1px solid #eaeaea;
+	background-color:#FFF;
+	padding-left:5px;
+}
+ul.fuKuangUl li.firstLi {
+	border-top:none;
+}
+ul.fuKuangUl li span {
+	width:15px;
+	height:28px;
+	display:inline-block;
+	text-align:left;
+}
+ul.fuKuangUl li a {
+	margin-right:5px;
+}
+#acinema,
+#ahall {
+	margin-left:73px;
+}
+.weizhi1 {
+	left:0px;
+	top:52px;
+}
+.weizhi2 {
+	left:223px;
+	top:52px;
+}
+.weizhi3 {
+	left:515px;
+	top:52px;
+}
+.yangTu {
+	margin-top:20px;
+}
+/*放大镜*/
+.fadajingQu {
+	margin-top:20px;
+	width:265px;
+	height:132px;
+	border-left:1px solid #666;
+}
+.fadajingQu li {
+	width:130px;
+	height:130px;
+	border-top:1px solid #666;
+	border-bottom:1px solid #666;
+	border-right:1px solid #666;
+	float:left;
+}
+.fadajingQu li a {
+	display:block;
+	width:130px;
+	height:130px;
+	position:relative;
+}
+.fadajingQu li a img {
+	width:130px;
+	height:130px;
+}
+.fadajingQu li a span {
+	background-color:#def3fe;
+	line-height:18px;
+	padding-left:3px;
+	padding-right:3px;
+	border:1px solid #757575;
+	left:49px;
+  position:absolute;
+  top:109px;
+	display:none;
+}
+.fadajingQu li a:hover span {
+	display:block;
+}
+.box {
+	width:130px;
+	height:130px;
+}
+.left {
+	width:130px;
+	height:130px;
+	float:left;
+	position:relative;
+}
+.left img {
+	float:left;
+	width:130px;
+	height:130px;
+}
+.left .move {
+	width:30px;
+	height:30px;
+	background:#666;
+	opacity:0.3;
+	top:3px;
+	left:3px;
+	position:absolute;
+	z-index:1;
+	display:none;
+	filter: alpha(opacity: 30);
+	border:1px solid #000;
+}
+.left .mask {
+	width:100%;
+	height:100%;
+	opacity:0;
+	top:0px;
+	left:0px;
+	position:absolute;
+	z-index:2;
+	background:#000;
+	cursor:move;
+	filter:alpha(opacity: 0);
+}
+.right {
+	width:300px;
+	height:300px;
+	float:left;
+	overflow:hidden;
+	display:inline;
+	position:relative;
+	display:none;
+	margin-left:130px;
+	margin-top:-130px;
+}
+.right img {
+	position:absolute;
+	top:0px;
+	left:0px;
+}
+
+/**/
+.boxTwo {
+	width:130px;
+	height:130px;
+}
+.leftTwo {
+	width:130px;
+	height:130px;
+	float:left;
+	position:relative;
+}
+.leftTwo img {
+	float:left;
+	width:130px;
+	height:130px;
+}
+.leftTwo .moveTwo {
+	width:30px;
+	height:30px;
+	background:#666;
+	opacity:0.3;
+	top:3px;
+	left:3px;
+	position:absolute;
+	z-index:1;
+	display:none;
+	filter: alpha(opacity: 30);
+	border:1px solid #000;
+}
+.leftTwo .maskTwo {
+	width:100%;
+	height:100%;
+	opacity:0;
+	top:0px;
+	left:0px;
+	position:absolute;
+	z-index:2;
+	background:#000;
+	cursor:move;
+	filter:alpha(opacity: 0);
+}
+.rightTwo {
+	width:300px;
+	height:300px;
+	float:left;
+	overflow:hidden;
+	display:inline;
+	position:relative;
+	display:none;
+	margin-left:130px;
+	margin-top:-130px;
+}
+.rightTwo img {
+	position:absolute;
+	top:0px;
+	left:0px;
+}
+/*******2014.05.04 图片弹窗******/
+.picTanc {
+	position:absolute;
+	z-index:1000;
+	width:618px;
+	height:541px;
+	background-image:url(../images/tcBj.png);
+	overflow:hidden;
+	display:none;
+}
+.picTanc .guanbiQu {
+	width:618px;
+	height:34px;
+	float:left;
+}
+.picTanc .guanbiQu a {
+	display:block;
+	width:21px;
+	height:21px;
+	float:right;
+	margin-right:8px;
+	margin-top:8px;
+}
+.picTanc .datuQu {
+	width:598px;
+	height:498px;
+	float:left;
+	margin-left:10px;
+}
+.picTanc .datuQu img {
+	width:598px;
+	height:498px;
+}

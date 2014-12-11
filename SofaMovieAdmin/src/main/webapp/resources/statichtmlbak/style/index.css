@@ -1,0 +1,90 @@
+@charset "utf-8";
+/* CSS Document */
+/*************************************
+* file name：index.css
+* personnel：韩志军
+* date：2014-04-23
+* contact：hanzhijun@hipiao.com
+* content：页面制作样式库文件-首页样式
+************************************/
+.indexMain {
+	width:961px;
+	margin:60px auto 5px;
+	overflow:hidden;
+}
+.ketingTu {
+	width:660px;
+	height:558px;
+	float:left;
+	background-image:url(../images/ketingTu.jpg);
+}
+.lunboK {
+	width:300px;
+	height:320px;
+	float:left;
+}
+.shipinQu {
+	width:300px;
+	height:238px;
+	float:left;
+	background-image:url(../images/shipinTu.jpg);
+}
+.lunboQu { width:300px; height:320px; margin:0 auto; position:relative; overflow:hidden;}
+.lunboQu .num { overflow:hidden; height:10px; position:absolute; bottom:12px; right:105px; zoom:1; z-index:3 }
+.lunboQu .num li {width:11px;height:10px;margin-right:10px;cursor:pointer;float:right;background:url(../images/off.png) no-repeat;overflow:hidden;line-height:50px;}
+.lunboQu .num li.on { background:url(../images/on.png) no-repeat;} /*当前项*/
+.lunboQu .prev,
+.lunboQu .next { display:none!important;}
+/*搜索结果页*/
+.sousuoTt {
+	padding-left:60px;
+	padding-right:270px;
+	line-height:26px;
+	font-size:18px;
+	padding-bottom:25px;
+}
+ul.sousuoJg {
+	width:630px;
+	margin-left:60px;
+	overflow:hidden;
+}
+ul.sousuoJg li {
+	margin-bottom:20px;
+}
+ul.sousuoJg li .jieguoTt {
+	line-height:25px;
+	font-size:14px;
+}
+ul.sousuoJg li .jieguoNr {
+	line-height:20px;
+	font-size:13px;
+}
+.fenyeQu {
+	width:630px;
+	height:30px;
+	margin-left:60px;
+	margin-top:30px;
+	text-align:center;
+}
+.fenyeQu a {
+	display:inline-block;
+	padding:0 10px;
+	margin-left:8px;
+	border:1px solid #CCC;
+}
+.fenyeQu a.thisOver {
+	background-color:#0071c5;
+	color:#FFF;
+}
+.fenyeQu a.lastYe,
+.fenyeQu a.nextYe {
+	padding:0;
+	line-height:20px;
+	border:none;
+}
+.fenyeQu a.zhihui {
+	padding:0;
+	line-height:20px;
+	border:none;
+	color:#CCC;
+}

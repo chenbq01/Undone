@@ -1,0 +1,128 @@
+@charset "utf-8";
+/* CSS Document */
+/*************************************
+* file name：basic.css
+* personnel：韩志军
+* date：2014-04-23
+* contact：hanzhijun@hipiao.com
+* content：页面制作样式库文件-网站基本样式
+************************************/
+
+/************ 网站基本样式 **********/
+* {
+	margin:0px;
+	padding:0px;
+}
+body,td,th {
+	font-size:12px;
+	color: #5d5c5c;
+}
+body {
+	background-color:#FFFFFF;
+	font-family:"微软雅黑", Verdana, Arial, Helvetica, sans-serif;
+}
+input, select, textarea {
+	color:#5d5c5c;
+	border:1px solid #B3B3B3;
+}
+textarea {
+	resize:none;
+	font-size:12px;
+}
+input.fuxuanK,
+input.danxuanK {
+	border:none;
+}
+a {
+	color:#5d5c5c;
+	text-decoration:none;
+}
+a:hover {
+	color:#0071c5;
+	text-decoration:underline;
+}
+ul,li {/*清除列表样式*/
+	list-style:none;
+}
+img {
+	border:none;
+}
+.clearFloat { /* 此类应当放在 div 或 break 元素上，而且该元素应当是完全包含浮动的容器关闭之前的最后一个元素 */
+	clear:both;
+	height:0;
+	font-size: 1px;
+	line-height: 0px;
+}
+/***********文字样式************/
+.font13 {
+	font-size:13px;
+}
+.font14 {
+	font-size:14px;
+}
+.font16 {
+	font-size:16px;
+}
+.font18 {
+	font-size:18px;
+}
+.font20 {
+	font-size:20px;
+}
+.colorRed {/*红色字*/
+	color:#FF0000;
+}
+.colorBlue {/*蓝色字*/
+	color:#0071c5;
+}
+.colorYellow {/*橙色字*/
+	color:#FA5400;
+}
+.colorHui {/*灰色字*/
+	color:#8d98a4;
+}
+.fontBold {/*粗体*/
+	font-weight:bold;
+}
+.linH16 {/*行高*/
+	line-height:16px;
+}
+.linH18 {
+	line-height:18px;
+}
+.linH20 {
+	line-height:20px;
+}
+.linH30 {
+	line-height:30px;
+}
+.linH40 {
+	line-height:40px;
+}
+.fontXiahua {
+	text-decoration:underline;
+}
+.overfontXiahua:hover {
+	text-decoration:underline;
+}
+.fontThrough {
+	text-decoration:line-through;
+}
+.floatLeft {
+	float:left;
+}
+.floatRight {
+	float:right;
+}
+.inlineBlock {
+	display:inline-block;
+}
+a.helpTt {
+	color:#0f4f79;
+}
+a.helpTt:hover {
+	text-decoration:underline;
+}
+.nrCenter {
+	margin:0 auto;
+}
