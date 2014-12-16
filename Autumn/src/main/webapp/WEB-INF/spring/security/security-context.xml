@@ -23,20 +23,15 @@
 		<beans:property name="securityMetadataSource" ref="securityMetadataSource" />
 	</beans:bean>
 
+	<http pattern="/login" security="none" />
+
 	<http auto-config="true" use-expressions="true">
-		<!--intercept-url pattern="/account/*" access="hasRole('ROLE_USER') and 
-			fullyAuthenticated" /> <intercept-url pattern="/login" access="permitAll" 
-			/> <intercept-url pattern="/*" access="hasRole('ROLE_USER')" / -->
 		<form-login login-page="/login" />
 		<logout invalidate-session="true" logout-success-url="/"
 			logout-url="/logout" />
 		<remember-me key="autumn" services-ref="ipTokenBasedRememberMeServicesBean" />
 		<custom-filter ref="filterSecurityInterceptor" before="FILTER_SECURITY_INTERCEPTOR" />
 	</http>
-
-	<!--authentication-manager alias="authenticationManager"> <authentication-provider> 
-		<user-service id="userService"> <user authorities="ROLE_USER" name="guest" 
-		password="guest" /> </user-service> </authentication-provider> </authentication-manager -->
 
 	<authentication-manager alias="authenticationManager">
 		<authentication-provider user-service-ref="userService" />
@@ -49,11 +44,6 @@
 	<beans:bean name="securityMetadataSource"
 		class="org.season.autumn.security.CustomFilterInvocationSecurityMetadataSource">
 	</beans:bean>
-
-	<!--beans:bean id="userService" class="org.springframework.security.provisioning.InMemoryUserDetailsManager"> 
-		<beans:constructor-arg name="users"> <beans:props> <beans:prop key="guest">guest,ROLE_USER</beans:prop> 
-		</beans:props> </beans:constructor-arg> <beans:property name="authenticationManager" 
-		ref="authenticationManager" /> </beans:bean -->
 
 	<beans:bean id="userService"
 		class="org.season.autumn.security.CustomUserDetailsService">

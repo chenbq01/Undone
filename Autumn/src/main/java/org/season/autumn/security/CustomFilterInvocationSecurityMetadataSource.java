@@ -8,6 +8,8 @@ import java.util.Set;
 import org.season.autumn.domain.Permission;
 import org.season.autumn.domain.Role;
 import org.season.autumn.service.PermissionService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.access.SecurityConfig;
@@ -16,6 +18,9 @@ import org.springframework.security.web.access.intercept.FilterInvocationSecurit
 
 public class CustomFilterInvocationSecurityMetadataSource implements
 		FilterInvocationSecurityMetadataSource {
+
+	private static final Logger logger = LoggerFactory
+			.getLogger(CustomFilterInvocationSecurityMetadataSource.class);
 
 	@Autowired
 	private PermissionService permissionService;
@@ -28,9 +33,11 @@ public class CustomFilterInvocationSecurityMetadataSource implements
 		if (firstQuestionMarkIndex != -1) {
 			url = url.substring(0, firstQuestionMarkIndex);
 		}
-		System.out.println("++++url:" + url);
+		if (logger.isDebugEnabled()) {
+			logger.debug("请求的地址为[" + url + "]");
+		}
 		List<ConfigAttribute> result = new ArrayList<ConfigAttribute>();
-		ConfigAttribute attribute = new SecurityConfig("ROLE_BASE");
+		ConfigAttribute attribute = new SecurityConfig("ROLE_GUEST");
 		result.add(attribute);
 		try {
 			List<Permission> permissionList = permissionService

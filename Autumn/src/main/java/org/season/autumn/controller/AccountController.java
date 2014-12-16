@@ -6,9 +6,7 @@ import java.util.Locale;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,9 +19,6 @@ public class AccountController {
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(AccountController.class);
-
-	//@Autowired
-	//private UserDetailsManager userDetailsManager;
 
 	@RequestMapping(method = RequestMethod.GET, value = "/home")
 	public String home(Locale locale, Model model) {
@@ -49,7 +44,7 @@ public class AccountController {
 	public String submitChangePasswordPage(
 			@RequestParam("oldpassword") String oldPassword,
 			@RequestParam("newpassword") String newPassword) {
-		//userDetailsManager.changePassword(oldPassword, newPassword);
+
 		SecurityContextHolder.clearContext();
 		return "redirect:/account/home";
 	}
