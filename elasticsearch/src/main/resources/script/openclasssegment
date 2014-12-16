@@ -1,0 +1,55 @@
+curl -XPUT 'http://localhost:9200/onion/' -d '{
+    "mappings" : {
+        "openclasssegment" : {
+            "properties" : {
+            	"bookid" : {
+                    "type" : "long"
+                  },
+                  "chapterid" : {
+                    "type" : "long"
+                  },
+                  "language" : {
+                    "type" : "string"
+                  },
+                  "segment_en" : {
+                    "type" : "string"
+                  },
+                  "segment_zh" : {
+                    "type" : "string"
+                  }
+            }
+        }
+    }
+}'
+
+curl -XPUT 'localhost:9200/_river/openclasssegment_total/_meta' -d '{
+	"type" : "jdbc",
+	 "jdbc" : {
+		 "url" : "jdbc:mysql://192.168.54.110:3306/onion",
+		 "user" : "onionuser",
+		 "password" : "654321",
+		 "sql" : "SELECT s.id AS _id,s.lessonid bookid,s.lectureid chapterid,s.content_zh segment_zh,s.content_en segment_en,r.language FROM openclasssegment s LEFT JOIN readingmaterial r ON s.lessonid=r.id",
+		 "index" : "onion",
+		 "type" : "openclasssegment",
+		 "schedule" : "0 0/5 0-23 ? * *",
+		 "timezone" : "Asia/Shanghai",
+		 "maxbulkactions" : 1000,
+		 "maxconcurrrentbulkactions" : 16
+	      }
+}'
+
+curl -XPUT 'localhost:9200/_river/openclasssegment_delta/_meta' -d '{
+	"type" : "jdbc",
+	"jdbc" : {
+		 "url" : "jdbc:mysql://192.168.54.110:3306/onion",
+		 "user" : "onionuser",
+		 "password" : "654321",
+		 "sql" : "SELECT s.id AS _id,s.lessonid bookid,s.lectureid chapterid,s.content_zh segment_zh,s.content_en segment_en,r.language FROM openclasssegment s LEFT JOIN readingmaterial r ON s.lessonid=r.id WHERE UNIX_TIMESTAMP(s.last_modified) BETWEEN UNIX_TIMESTAMP(NOW())-60 AND UNIX_TIMESTAMP(NOW())",
+		 "index" : "onion",
+		 "type" : "openclasssegment",
+		 "schedule" : "0 0-59 0-23 ? * *",
+		 "timezone" : "Asia/Shanghai",
+		 "maxbulkactions" : 1000,
+		 "maxconcurrrentbulkactions" : 16
+      }
+}'

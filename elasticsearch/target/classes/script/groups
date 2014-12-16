@@ -1,0 +1,58 @@
+curl -XPUT 'http://localhost:9200/onion/groups' -d '{
+    "mappings" : {
+        "groups" : {
+            "properties" : {
+            	 "NAME" : {
+                    "type" : "string"
+                  },
+                  "checkstatus" : {
+                    "type" : "long"
+                  },
+                  "description" : {
+                    "type" : "string"
+                  },
+                  "nickname" : {
+                    "type" : "string"
+                  },
+                  "topicnum" : {
+                    "type" : "long"
+                  },
+                  "usernum" : {
+                    "type" : "long"
+                  }
+            }
+        }
+    }
+}'
+
+curl -XPUT 'localhost:9200/_river/groups_total/_meta' -d '{
+	"type" : "jdbc",
+	 "jdbc" : {
+		 "url" : "jdbc:mysql://192.168.54.110:3306/onion",
+		 "user" : "onionuser",
+		 "password" : "654321",
+		 "sql" : "SELECT g.id AS _id,g.groupname AS NAME,g.groupdesc AS description,u.nickname,(SELECT COUNT(*) FROM rel_person_group r WHERE r.groupid=g.id) AS usernum,(SELECT COUNT(*) FROM topic t WHERE t.groupid=g.id) AS topicnum,g.checkstatus FROM groups g LEFT JOIN `user` u ON g.userid=u.id WHERE g.checkstatus=2",
+		 "index" : "onion",
+		 "type" : "groups",
+		 "schedule" : "0 0/5 0-23 ? * *",
+		 "timezone" : "Asia/Shanghai",
+		 "maxbulkactions" : 1000,
+		 "maxconcurrrentbulkactions" : 16
+	      }
+}'
+
+curl -XPUT 'localhost:9200/_river/groups_delta/_meta' -d '{
+	"type" : "jdbc",
+	"jdbc" : {
+		 "url" : "jdbc:mysql://192.168.54.110:3306/onion",
+		 "user" : "onionuser",
+		 "password" : "654321",
+		 "sql" : "SELECT g.id AS _id,g.groupname AS NAME,g.groupdesc AS description,u.nickname,(SELECT COUNT(*) FROM rel_person_group r WHERE r.groupid=g.id) AS usernum,(SELECT COUNT(*) FROM topic t WHERE t.groupid=g.id) AS topicnum,g.checkstatus FROM groups g LEFT JOIN `user` u ON g.userid=u.id WHERE g.checkstatus=2 AND UNIX_TIMESTAMP(g.last_modified) BETWEEN UNIX_TIMESTAMP(NOW())-60 AND UNIX_TIMESTAMP(NOW())",
+		 "index" : "onion",
+		 "type" : "groups",
+		 "schedule" : "0 0-59 0-23 ? * *",
+		 "timezone" : "Asia/Shanghai",
+		 "maxbulkactions" : 1000,
+		 "maxconcurrrentbulkactions" : 16
+      }
+}'

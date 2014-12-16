@@ -20,4 +20,6 @@
 			expression="org.springframework.stereotype.Component" />
 	</context:component-scan>
 
+	<bean id="exceptionHandler" class="org.season.autumn.exception.CustomExceptionHandler" />
+
 </beans>

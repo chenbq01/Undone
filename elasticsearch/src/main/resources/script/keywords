@@ -1,0 +1,46 @@
+curl -XPUT 'http://localhost:9200/onion/' -d '{
+    "mappings" : {
+        "keywords" : {
+            "properties" : {
+            	 "COUNT" : {
+                    "type" : "long"
+                  },
+                  "keyword" : {
+                    "type" : "string"
+                  }
+            }
+        }
+    }
+}'
+
+curl -XPUT 'localhost:9200/_river/keywords_total/_meta' -d '{
+	"type" : "jdbc",
+	 "jdbc" : {
+		 "url" : "jdbc:mysql://192.168.24.110:3306/onion",
+		 "user" : "onionuser",
+		 "password" : "654321",
+		 "sql" : "SELECT MIN(k.id) AS _id,k.keyword,COUNT(*) AS COUNT FROM keywords k GROUP BY keyword",
+		 "index" : "onion",
+		 "type" : "keywords",
+		 "schedule" : "0 0/5 0-23 ? * *",
+		 "timezone" : "Asia/Shanghai",
+		 "maxbulkactions" : 1000,
+		 "maxconcurrrentbulkactions" : 16
+	      }
+}'
+
+curl -XPUT 'localhost:9200/_river/keywords_delta/_meta' -d '{
+	"type" : "jdbc",
+	"jdbc" : {
+		 "url" : "jdbc:mysql://192.168.24.110:3306/onion",
+		 "user" : "onionuser",
+		 "password" : "654321",
+		 "sql" : "SELECT MIN(k.id) AS _id,k.keyword,COUNT(*) AS COUNT FROM keywords k WHERE UNIX_TIMESTAMP(k.last_modified) BETWEEN UNIX_TIMESTAMP(NOW())-60 AND UNIX_TIMESTAMP(NOW()) GROUP BY keyword",
+		 "index" : "onion",
+		 "type" : "keywords",
+		 "schedule" : "0 0-59 0-23 ? * *",
+		 "timezone" : "Asia/Shanghai",
+		 "maxbulkactions" : 1000,
+		 "maxconcurrrentbulkactions" : 16
+      }
+}'

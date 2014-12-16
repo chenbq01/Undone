@@ -7,8 +7,7 @@
 		http://www.springframework.org/schema/security
 		http://www.springframework.org/schema/security/spring-security.xsd">
 
-	<beans:bean
-		class="org.season.autumn.springsecurity.security.IPTokenBasedRememberMeServices"
+	<beans:bean class="org.season.autumn.security.IPTokenBasedRememberMeServices"
 		id="ipTokenBasedRememberMeServicesBean">
 		<beans:constructor-arg name="key" value="autumn" />
 		<beans:constructor-arg name="userDetailsService"
@@ -17,15 +16,22 @@
 		<beans:constructor-arg name="cookieName" value="REMEMBER_ME_COOKIE" />
 	</beans:bean>
 
+	<beans:bean id="filterSecurityInterceptor"
+		class="org.season.autumn.security.FilterSecurityInterceptor">
+		<beans:property name="accessDecisionManager" ref="accessDecisionManager" />
+		<beans:property name="authenticationManager" ref="authenticationManager" />
+		<beans:property name="securityMetadataSource" ref="securityMetadataSource" />
+	</beans:bean>
+
 	<http auto-config="true" use-expressions="true">
-		<intercept-url pattern="/account/*"
-			access="hasRole('ROLE_USER') and fullyAuthenticated" />
-		<intercept-url pattern="/login" access="permitAll" />
-		<intercept-url pattern="/*" access="hasRole('ROLE_USER')" />
+		<!--intercept-url pattern="/account/*" access="hasRole('ROLE_USER') and 
+			fullyAuthenticated" /> <intercept-url pattern="/login" access="permitAll" 
+			/> <intercept-url pattern="/*" access="hasRole('ROLE_USER')" / -->
 		<form-login login-page="/login" />
 		<logout invalidate-session="true" logout-success-url="/"
 			logout-url="/logout" />
 		<remember-me key="autumn" services-ref="ipTokenBasedRememberMeServicesBean" />
+		<custom-filter ref="filterSecurityInterceptor" before="FILTER_SECURITY_INTERCEPTOR" />
 	</http>
 
 	<!--authentication-manager alias="authenticationManager"> <authentication-provider> 
@@ -36,13 +42,21 @@
 		<authentication-provider user-service-ref="userService" />
 	</authentication-manager>
 
+	<beans:bean name="accessDecisionManager"
+		class="org.season.autumn.security.CustomAccessDecisionManager">
+	</beans:bean>
+
+	<beans:bean name="securityMetadataSource"
+		class="org.season.autumn.security.CustomFilterInvocationSecurityMetadataSource">
+	</beans:bean>
+
+	<!--beans:bean id="userService" class="org.springframework.security.provisioning.InMemoryUserDetailsManager"> 
+		<beans:constructor-arg name="users"> <beans:props> <beans:prop key="guest">guest,ROLE_USER</beans:prop> 
+		</beans:props> </beans:constructor-arg> <beans:property name="authenticationManager" 
+		ref="authenticationManager" /> </beans:bean -->
+
 	<beans:bean id="userService"
-		class="org.season.autumn.springsecurity.security.InMemoryChangePasswordDaoImpl">
-		<beans:property name="userProperties">
-			<beans:props>
-				<beans:prop key="guest">guest,ROLE_USER</beans:prop>
-			</beans:props>
-		</beans:property>
+		class="org.season.autumn.security.CustomUserDetailsService">
 	</beans:bean>
 
 </beans:beans>

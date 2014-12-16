@@ -1,0 +1,64 @@
+curl -XPUT 'http://localhost:9200/onion' -d '{
+    "mappings" : {
+        "comments" : {
+            "properties" : {
+                "LANGUAGE" : {
+                    "type" : "long"
+                  },
+                  "bookid" : {
+                    "type" : "long"
+                  },
+                  "chapterid" : {
+                    "type" : "long"
+                  },
+                  "checkstatus" : {
+                    "type" : "long"
+                  },
+                  "commented_content" : {
+                    "type" : "string"
+                  },
+                  "content" : {
+                    "type" : "string"
+                  },
+                  "nickname" : {
+                    "type" : "string"
+                  },
+                  "segmentid" : {
+                    "type" : "long"
+                  }
+            }
+        }
+    }
+}'
+
+curl -XPUT 'localhost:9200/_river/comments_total/_meta' -d '{
+	"type" : "jdbc",
+	 "jdbc" : {
+		 "url" : "jdbc:mysql://192.168.54.110:3306/onion",
+		 "user" : "onionuser",
+		 "password" : "654321",
+		 "sql" : "SELECT c2.id AS _id,c.content,c2.bookid,c2.chapterid,c2.segmentid,c2.content AS commented_content,c2.languagetype AS LANGUAGE,u.nickname,c.checkstatus FROM comments c LEFT JOIN commentedcontent c2 ON c.commentedcontentid=c2.id LEFT JOIN `user` u ON c.userid=u.id WHERE c.checkstatus IN(1,2)",
+		 "index" : "onion",
+		 "type" : "comments",
+		 "schedule" : "0 0/5 0-23 ? * *",
+		 "timezone" : "Asia/Shanghai",
+		 "maxbulkactions" : 1000,
+		 "maxconcurrrentbulkactions" : 16
+	      }
+}'
+
+curl -XPUT 'localhost:9200/_river/comments_delta/_meta' -d '{
+	"type" : "jdbc",
+	"jdbc" : {
+		 "url" : "jdbc:mysql://192.168.54.110:3306/onion",
+		 "user" : "onionuser",
+		 "password" : "654321",
+		 "sql" : "SELECT c2.id AS _id,c.content,c2.bookid,c2.chapterid,c2.segmentid,c2.content AS commented_content,c2.languagetype AS LANGUAGE,u.nickname,c.checkstatus FROM comments c LEFT JOIN commentedcontent c2 ON c.commentedcontentid=c2.id LEFT JOIN `user` u ON c.userid=u.id WHERE c.checkstatus IN(1,2) AND UNIX_TIMESTAMP(c2.last_modified) BETWEEN UNIX_TIMESTAMP(NOW())-60 AND UNIX_TIMESTAMP(NOW())",
+		 "index" : "onion",
+		 "type" : "comments",
+		 "schedule" : "0 0-59 0-23 ? * *",
+		 "timezone" : "Asia/Shanghai",
+		 "maxbulkactions" : 1000,
+		 "maxconcurrrentbulkactions" : 16
+      }
+}'

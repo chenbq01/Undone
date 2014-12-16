@@ -1,0 +1,61 @@
+curl -XPUT 'http://localhost:9200/onion/' -d '{
+    "mappings" : {
+        "user" : {
+            "properties" : {
+                "activestatus" : {
+                    "type" : "long"
+                  },
+                  "attentionnum" : {
+                    "type" : "long"
+                  },
+                  "description" : {
+                    "type" : "string"
+                  },
+                  "likenum" : {
+                    "type" : "long"
+                  },
+                  "name" : {
+                    "type" : "string"
+                  },
+                  "nickname" : {
+                    "type" : "string"
+                  },
+                  "readnum" : {
+                    "type" : "long"
+                  }
+            }
+        }
+    }
+}'
+
+curl -XPUT 'localhost:9200/_river/user_total/_meta' -d '{
+	"type" : "jdbc",
+	 "jdbc" : {
+		 "url" : "jdbc:mysql://192.168.24.110:3306/onion",
+		 "user" : "onionuser",
+		 "password" : "654321",
+		 "sql" : "SELECT u.id AS _id,u.name,u.nickname,u.userdesc AS description,0 likenum,0 readnum,0 attentionnum,u.activestatus FROM `user` u WHERE u.activestatus=1",
+		 "index" : "onion",
+		 "type" : "user",
+		 "schedule" : "0 0/5 0-23 ? * *",
+		 "timezone" : "Asia/Shanghai",
+		 "maxbulkactions" : 1000,
+		 "maxconcurrrentbulkactions" : 16
+	      }
+}'
+
+curl -XPUT 'localhost:9200/_river/user_delta/_meta' -d '{
+	"type" : "jdbc",
+	"jdbc" : {
+		 "url" : "jdbc:mysql://192.168.24.110:3306/onion",
+		 "user" : "onionuser",
+		 "password" : "654321",
+		 "sql" : "SELECT u.id AS _id,u.name,u.nickname,u.userdesc AS description,0 likenum,0 readnum,0 attentionnum,u.activestatus FROM `user` u WHERE u.activestatus=1 AND UNIX_TIMESTAMP(u.last_modified) BETWEEN UNIX_TIMESTAMP(NOW())-60 AND UNIX_TIMESTAMP(NOW())",
+		 "index" : "onion",
+		 "type" : "user",
+		 "schedule" : "0 0-59 0-23 ? * *",
+		 "timezone" : "Asia/Shanghai",
+		 "maxbulkactions" : 1000,
+		 "maxconcurrrentbulkactions" : 16
+      }
+}'

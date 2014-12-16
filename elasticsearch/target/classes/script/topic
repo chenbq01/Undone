@@ -1,0 +1,52 @@
+curl -XPUT 'http://localhost:9200/topic/' -d '{
+    "mappings" : {
+        "topic" : {
+            "properties" : {
+            	"NAME" : {
+                    "type" : "string"
+                  },
+                  "checkstatus" : {
+                    "type" : "long"
+                  },
+                  "description" : {
+                    "type" : "string"
+                  },
+                  "nickname" : {
+                    "type" : "string"
+                  }
+            }
+        }
+    }
+}'
+
+curl -XPUT 'localhost:9200/_river/topic_total/_meta' -d '{
+	"type" : "jdbc",
+	 "jdbc" : {
+		 "url" : "jdbc:mysql://192.168.24.110:3306/onion",
+		 "user" : "onionuser",
+		 "password" : "654321",
+		 "sql" : "SELECT t.id AS _id,t.topicname AS NAME,t.topicdesc AS description,u.nickname,t.checkstatus FROM topic t LEFT JOIN `user` u ON t.createduser=u.id WHERE t.checkstatus IN(1,2)",
+		 "index" : "onion",
+		 "type" : "topic",
+		 "schedule" : "0 0/5 0-23 ? * *",
+		 "timezone" : "Asia/Shanghai",
+		 "maxbulkactions" : 1000,
+		 "maxconcurrrentbulkactions" : 16
+	      }
+}'
+
+curl -XPUT 'localhost:9200/_river/topic_delta/_meta' -d '{
+	"type" : "jdbc",
+	"jdbc" : {
+		 "url" : "jdbc:mysql://192.168.24.110:3306/onion",
+		 "user" : "onionuser",
+		 "password" : "654321",
+		 "sql" : "SELECT t.id AS _id,t.topicname AS NAME,t.topicdesc AS description,u.nickname,t.checkstatus FROM topic t LEFT JOIN `user` u ON t.createduser=u.id WHERE t.checkstatus IN(1,2) AND UNIX_TIMESTAMP(t.last_modified) BETWEEN UNIX_TIMESTAMP(NOW())-60 AND UNIX_TIMESTAMP(NOW())",
+		 "index" : "onion",
+		 "type" : "topic",
+		 "schedule" : "0 0-59 0-23 ? * *",
+		 "timezone" : "Asia/Shanghai",
+		 "maxbulkactions" : 1000,
+		 "maxconcurrrentbulkactions" : 16
+      }
+}'

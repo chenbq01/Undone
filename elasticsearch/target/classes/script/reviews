@@ -1,0 +1,52 @@
+curl -XPUT 'http://localhost:9201/reviews/' -d '{
+    "mappings" : {
+        "reviews" : {
+            "properties" : {
+            	"checkstatus" : {
+                    "type" : "long"
+                  },
+                  "content" : {
+                    "type" : "string"
+                  },
+                  "nickname" : {
+                    "type" : "string"
+                  },
+                  "title" : {
+                    "type" : "string"
+                  }
+            }
+        }
+    }
+}'
+
+curl -XPUT 'localhost:9200/_river/reviews_total/_meta' -d '{
+	"type" : "jdbc",
+	 "jdbc" : {
+		 "url" : "jdbc:mysql://192.168.24.110:3306/onion",
+		 "user" : "onionuser",
+		 "password" : "654321",
+		 "sql" : "SELECT r.id AS _id,r.title,r.content,u.nickname,r.checkstatus FROM reviews r LEFT JOIN `user` u ON r.userid=u.id WHERE r.checkstatus IN(1,2)",
+		 "index" : "onion",
+		 "type" : "reviews",
+		 "schedule" : "0 0/5 0-23 ? * *",
+		 "timezone" : "Asia/Shanghai",
+		 "maxbulkactions" : 1000,
+		 "maxconcurrrentbulkactions" : 16
+	      }
+}'
+
+curl -XPUT 'localhost:9200/_river/reviews_delta/_meta' -d '{
+	"type" : "jdbc",
+	"jdbc" : {
+		 "url" : "jdbc:mysql://192.168.24.110:3306/onion",
+		 "user" : "onionuser",
+		 "password" : "654321",
+		 "sql" : "SELECT r.id AS _id,r.title,r.content,u.nickname,r.checkstatus FROM reviews r LEFT JOIN `user` u ON r.userid=u.id WHERE r.checkstatus IN(1,2) AND UNIX_TIMESTAMP(r.last_modified) BETWEEN UNIX_TIMESTAMP(NOW())-60 AND UNIX_TIMESTAMP(NOW())",
+		 "index" : "onion",
+		 "type" : "reviews",
+		 "schedule" : "0 0-59 0-23 ? * *",
+		 "timezone" : "Asia/Shanghai",
+		 "maxbulkactions" : 1000,
+		 "maxconcurrrentbulkactions" : 16
+      }
+}'

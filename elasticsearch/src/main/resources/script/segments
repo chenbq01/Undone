@@ -1,0 +1,55 @@
+curl -XPUT 'http://localhost:9200/segments/' -d '{
+    "mappings" : {
+        "segments" : {
+            "properties" : {
+                "bookid" : {
+                    "type" : "long"
+                  },
+                  "chapterid" : {
+                    "type" : "long"
+                  },
+                  "language" : {
+                    "type" : "string"
+                  },
+                  "segment_en" : {
+                    "type" : "string"
+                  },
+                  "segment_zh" : {
+                    "type" : "string"
+                  }
+            }
+        }
+    }
+}'
+
+curl -XPUT 'localhost:9200/_river/segments_total/_meta' -d '{
+	"type" : "jdbc",
+	 "jdbc" : {
+		 "url" : "jdbc:mysql://192.168.24.110:3306/onion",
+		 "user" : "onionuser",
+		 "password" : "654321",
+		 "sql" : "SELECT s.id AS _id,s.bookid,s.chapterid,s.segment_zh,s.segment_en,r.language FROM segments s LEFT JOIN readingmaterial r ON s.bookid=r.id",
+		 "index" : "onion",
+		 "type" : "segments",
+		 "schedule" : "0 0/5 0-23 ? * *",
+		 "timezone" : "Asia/Shanghai",
+		 "maxbulkactions" : 1000,
+		 "maxconcurrrentbulkactions" : 16
+	      }
+}'
+
+curl -XPUT 'localhost:9200/_river/segments_delta/_meta' -d '{
+	"type" : "jdbc",
+	"jdbc" : {
+		 "url" : "jdbc:mysql://192.168.24.110:3306/onion",
+		 "user" : "onionuser",
+		 "password" : "654321",
+		 "sql" : "SELECT s.id AS _id,s.bookid,s.chapterid,s.segment_zh,s.segment_en,r.language FROM segments s LEFT JOIN readingmaterial r ON s.bookid=r.id WHERE UNIX_TIMESTAMP(s.last_modified) BETWEEN UNIX_TIMESTAMP(NOW())-60 AND UNIX_TIMESTAMP(NOW())",
+		 "index" : "onion",
+		 "type" : "segments",
+		 "schedule" : "0 0-59 0-23 ? * *",
+		 "timezone" : "Asia/Shanghai",
+		 "maxbulkactions" : 1000,
+		 "maxconcurrrentbulkactions" : 16
+      }
+}'

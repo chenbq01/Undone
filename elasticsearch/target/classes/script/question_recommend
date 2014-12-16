@@ -1,0 +1,60 @@
+curl -XPUT 'http://localhost:9200/question_recommend/' -d '{
+    "mappings" : {
+        "question_recommend" : {
+            "properties" : {
+            	"answer" : {
+                    "type" : "string"
+                  },
+                  "back_uid" : {
+                    "type" : "long"
+                  },
+                  "category" : {
+                    "type" : "long"
+                  },
+                  "create_time" : {
+                    "type" : "date",
+                    "format" : "dateOptionalTime"
+                  },
+                  "question" : {
+                    "type" : "string"
+                  },
+                  "update_time" : {
+                    "type" : "date",
+                    "format" : "dateOptionalTime"
+                  }
+            }
+        }
+    }
+}'
+
+curl -XPUT 'localhost:9200/_river/question_recommend_total/_meta' -d '{
+	"type" : "jdbc",
+	 "jdbc" : {
+		 "url" : "jdbc:mysql://192.168.24.110:3306/onion",
+		 "user" : "onionuser",
+		 "password" : "654321",
+		 "sql" : "SELECT id AS _id,back_uid,category,question,answer,create_time,update_time FROM question_recommend",
+		 "index" : "onion",
+		 "type" : "question_recommend",
+		 "schedule" : "0 0/5 0-23 ? * *",
+		 "timezone" : "Asia/Shanghai",
+		 "maxbulkactions" : 1000,
+		 "maxconcurrrentbulkactions" : 16
+	      }
+}'
+
+curl -XPUT 'localhost:9200/_river/question_recommend_delta/_meta' -d '{
+	"type" : "jdbc",
+	"jdbc" : {
+		 "url" : "jdbc:mysql://192.168.24.110:3306/onion",
+		 "user" : "onionuser",
+		 "password" : "654321",
+		 "sql" : "SELECT id AS _id,back_uid,category,question,answer,create_time,update_time FROM question_recommend WHERE UNIX_TIMESTAMP(update_time) BETWEEN UNIX_TIMESTAMP(NOW())-60 AND UNIX_TIMESTAMP(NOW())",
+		 "index" : "onion",
+		 "type" : "question_recommend",
+		 "schedule" : "0 0-59 0-23 ? * *",
+		 "timezone" : "Asia/Shanghai",
+		 "maxbulkactions" : 1000,
+		 "maxconcurrrentbulkactions" : 16
+      }
+}'
