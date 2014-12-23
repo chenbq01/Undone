@@ -3,6 +3,8 @@ package org.season.autumn.domain;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.Cacheable;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -16,6 +18,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "role")
+@Cacheable
 public class Role {
 
 	@Id
@@ -29,10 +32,10 @@ public class Role {
 	@Column(name = "description")
 	private String description;
 
-	@ManyToMany(mappedBy = "roles", targetEntity = User.class, fetch = FetchType.EAGER)
+	@ManyToMany(mappedBy = "roles", targetEntity = User.class, fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
 	private Set<User> users = new HashSet<User>();
 
-	@ManyToMany(targetEntity = Permission.class, fetch = FetchType.EAGER)
+	@ManyToMany(targetEntity = Permission.class, fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
 	@JoinTable(name = "role_permission_relation", joinColumns = @JoinColumn(name = "role_id"), inverseJoinColumns = @JoinColumn(name = "permission_id"))
 	private Set<Permission> permissions = new HashSet<Permission>();
 

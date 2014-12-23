@@ -63,7 +63,7 @@ public class CustomFilterInvocationSecurityMetadataSource implements
 
 	@Override
 	public Collection<ConfigAttribute> getAllConfigAttributes() {
-		return null;
+		return new ArrayList<ConfigAttribute>();
 	}
 
 	@Override

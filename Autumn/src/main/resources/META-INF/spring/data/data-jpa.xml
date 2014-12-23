@@ -22,7 +22,7 @@
 
 	<bean id="entityManagerFactory"
 		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
-		<property name="persistenceUnitName" value="Autumn" />
+		<property name="persistenceUnitName" value="JPA_Hibernate" />
 	</bean>
 
 </beans>

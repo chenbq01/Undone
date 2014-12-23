@@ -3,6 +3,8 @@ package org.season.autumn.domain;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.Cacheable;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -16,6 +18,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "user")
+@Cacheable
 public class User {
 
 	@Id
@@ -44,7 +47,7 @@ public class User {
 	@Column(name = "credentials_non_expired")
 	private boolean credentialsNonExpired;
 
-	@ManyToMany(targetEntity = Role.class, fetch = FetchType.EAGER)
+	@ManyToMany(targetEntity = Role.class, fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
 	@JoinTable(name = "user_role_relation", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Set<Role> roles = new HashSet<Role>();
 

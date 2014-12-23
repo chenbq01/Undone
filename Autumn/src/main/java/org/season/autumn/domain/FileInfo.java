@@ -2,6 +2,7 @@ package org.season.autumn.domain;
 
 import java.io.Serializable;
 
+import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,6 +12,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "file_info")
+@Cacheable
 public class FileInfo implements Serializable {
 
 	private static final long serialVersionUID = 1L;

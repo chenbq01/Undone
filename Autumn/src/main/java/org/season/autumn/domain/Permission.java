@@ -3,6 +3,8 @@ package org.season.autumn.domain;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.Cacheable;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -14,6 +16,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "permission")
+@Cacheable
 public class Permission {
 
 	@Id
@@ -36,7 +39,7 @@ public class Permission {
 	@Column(name = "description")
 	private String description;
 
-	@ManyToMany(mappedBy = "permissions", targetEntity = Role.class, fetch = FetchType.EAGER)
+	@ManyToMany(mappedBy = "permissions", targetEntity = Role.class, fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
 	private Set<Role> roles = new HashSet<Role>();
 
 	public Long getId() {
