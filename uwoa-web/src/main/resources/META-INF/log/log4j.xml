@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration PUBLIC "-//APACHE//DTD LOG4J 1.2//EN" "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+	<!-- Appenders -->
+	<appender name="ConsoleAppender" class="org.apache.log4j.ConsoleAppender">
+		<param name="Target" value="System.out" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%-5p: %c - %m%n" />
+		</layout>
+	</appender>
+
+	<!--appender name="RollingFileAppender" class="org.apache.log4j.RollingFileAppender"> 
+		<param name="Append" value="false" /> <param name="MaxFileSize" value="1MB" 
+		/> <param name="File" value="d:/uwoa.log" /> <param name="MaxBackupIndex" 
+		value="3" /> <layout class="org.apache.log4j.PatternLayout"> <param name="ConversionPattern" 
+		value="%d{yyyy-MM-dd HH:mm:ss}:%p %t %c - %m%n" /> </layout> </appender -->
+
+	<!--appender name="DailyRollingFileAppender" class="org.apache.log4j.DailyRollingFileAppender"> 
+		<param name="File" value="d:/uwoa.log" /> <param name="DatePattern" value="'.'yyyy-MM-dd'.log'" 
+		/> <layout class="org.apache.log4j.PatternLayout"> <param name="ConversionPattern" 
+		value="%d{yyyy-MM-dd HH:mm:ss}:%p %t %c - %m%n" /> </layout> </appender -->
+
+	<!--appender name="JDBCAppender" class="cn.com.uwoa.global.log.CustomJDBCAppender"> 
+		<param name="URL" value="jdbc:mysql://localhost:3306/dev" / --><!-- ?useUnicode=true&characterEncoding=utf-8 -->
+	<!--param name="user" value="dev" /> <param name="password" value="dev" 
+		/> <param name="driver" value="com.mysql.jdbc.Driver" /> <layout class="org.apache.log4j.PatternLayout"> 
+		<param name="ConversionPattern" value="INSERT INTO log4j(log_createdate,log_thread,log_level,log_class,log_message) 
+		values('%d{yyyy-MM-dd HH:mm:ss}','%t','%-5p','%c','%m')" /> </layout> </appender -->
+
+	<!-- Application Loggers -->
+	<logger name="cn.com.uwoa">
+		<level value="info" />
+		<!--appender-ref ref="DailyRollingFileAppender" / -->
+		<!--appender-ref ref="JDBCAppender" / -->
+	</logger>
+
+	<!-- 3rdparty Loggers -->
+	<logger name="org.springframework.core">
+		<level value="info" />
+	</logger>
+
+	<logger name="org.springframework.beans">
+		<level value="info" />
+	</logger>
+
+	<logger name="org.springframework.context">
+		<level value="info" />
+	</logger>
+
+	<logger name="org.springframework.web">
+		<level value="info" />
+	</logger>
+
+	<!-- Root Logger -->
+	<root>
+		<priority value="info" />
+		<appender-ref ref="ConsoleAppender" />
+	</root>
+
+</log4j:configuration>

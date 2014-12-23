@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sitemesh>
+	<mapping path="/*" decorator="/WEB-INF/views/normal/sitemesh/main.jsp" />
+	<mapping path="/mbl*" decorator="/WEB-INF/views/mobile/sitemesh/main.jsp" />
+	<mapping path="/tab*" decorator="/WEB-INF/views/tablet/sitemesh/main.jsp" />
+	<mapping path="/" exclue="true" />
+	<mapping path="/mobile/preview*" exclue="true" />
+</sitemesh>
