@@ -10,7 +10,8 @@
 	<h1>Hello world!</h1>
 
 	<P>The time on the server is ${serverTime}.</P>
-	<a
-		href="<c:url value="/callback/?signature=signature&timestamp=timestamp&nonce=nonce&echostr=echostr"/>">模拟微信请求</a>
+	<form method="post">
+		<input type="file" name="file">
+	</form>
 </body>
 </html>

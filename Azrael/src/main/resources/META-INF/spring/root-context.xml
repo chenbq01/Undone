@@ -1,9 +1,110 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:context="http://www.springframework.org/schema/context"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
 	<!-- Root Context: defines shared resources visible to all other web components -->
+
+
+	<util:constant id="msg.text"
+		static-field="com.beiwaiclass.weixin.config.MsgEventTypeConfig.MSG_TEXT" />
+
+	<bean id="msg.text.responsebuilder"
+		class="com.beiwaiclass.weixin.service.impl.MsgTextResponseBuilderService" />
+
+	<util:constant id="msg.image"
+		static-field="com.beiwaiclass.weixin.config.MsgEventTypeConfig.MSG_IMAGE" />
+
+	<bean id="msg.image.responsebuilder"
+		class="com.beiwaiclass.weixin.service.impl.MsgImageResponseBuilderService" />
+
+	<util:constant id="msg.voice"
+		static-field="com.beiwaiclass.weixin.config.MsgEventTypeConfig.MSG_VOICE" />
+
+	<bean id="msg.voice.responsebuilder"
+		class="com.beiwaiclass.weixin.service.impl.MsgVoiceResponseBuilderService" />
+
+	<util:constant id="msg.video"
+		static-field="com.beiwaiclass.weixin.config.MsgEventTypeConfig.MSG_VIDEO" />
+
+	<bean id="msg.video.responsebuilder"
+		class="com.beiwaiclass.weixin.service.impl.MsgVideoResponseBuilderService" />
+
+	<util:constant id="msg.location"
+		static-field="com.beiwaiclass.weixin.config.MsgEventTypeConfig.MSG_LOCATION" />
+
+	<bean id="msg.location.responsebuilder"
+		class="com.beiwaiclass.weixin.service.impl.MsgLocationResponseBuilderService" />
+
+	<util:constant id="msg.link"
+		static-field="com.beiwaiclass.weixin.config.MsgEventTypeConfig.MSG_LINK" />
+
+	<bean id="msg.link.responsebuilder"
+		class="com.beiwaiclass.weixin.service.impl.MsgLinkResponseBuilderService" />
+
+	<util:constant id="event.subscribe"
+		static-field="com.beiwaiclass.weixin.config.MsgEventTypeConfig.EVENT_SUBSCRIBE" />
+
+	<bean id="event.subscribe.responsebuilder"
+		class="com.beiwaiclass.weixin.service.impl.EventSubscribeResponseBuilderService" />
+
+	<util:constant id="event.unsubscribe"
+		static-field="com.beiwaiclass.weixin.config.MsgEventTypeConfig.EVENT_UNSUBSCRIBE" />
+
+	<bean id="event.unsubscribe.responsebuilder"
+		class="com.beiwaiclass.weixin.service.impl.EventUnsubscribeResponseBuilderService" />
+
+	<util:constant id="event.scan"
+		static-field="com.beiwaiclass.weixin.config.MsgEventTypeConfig.EVENT_SCAN" />
+
+	<bean id="event.scan.responsebuilder"
+		class="com.beiwaiclass.weixin.service.impl.EventScanResponseBuilderService" />
+
+	<util:constant id="event.location"
+		static-field="com.beiwaiclass.weixin.config.MsgEventTypeConfig.EVENT_LOCATION" />
+
+	<bean id="event.location.responsebuilder"
+		class="com.beiwaiclass.weixin.service.impl.EventLocationResponseBuilderService" />
+
+	<util:constant id="event.click"
+		static-field="com.beiwaiclass.weixin.config.MsgEventTypeConfig.EVENT_CLICK" />
+
+	<bean id="event.click.responsebuilder"
+		class="com.beiwaiclass.weixin.service.impl.EventClickResponseBuilderService" />
+
+	<util:constant id="event.view"
+		static-field="com.beiwaiclass.weixin.config.MsgEventTypeConfig.EVENT_VIEW" />
+
+	<bean id="event.view.responsebuilder"
+		class="com.beiwaiclass.weixin.service.impl.EventViewResponseBuilderService" />
+
+	<util:map id="msgtypehandler" map-class="java.util.HashMap"
+		key-type="java.lang.String" value-type="com.beiwaiclass.weixin.service.ResponseBuilderService">
+		<entry key-ref="msg.text" value-ref="msg.text.responsebuilder" />
+		<entry key-ref="msg.image" value-ref="msg.image.responsebuilder" />
+		<entry key-ref="msg.voice" value-ref="msg.voice.responsebuilder" />
+		<entry key-ref="msg.video" value-ref="msg.video.responsebuilder" />
+		<entry key-ref="msg.location" value-ref="msg.location.responsebuilder" />
+		<entry key-ref="msg.link" value-ref="msg.link.responsebuilder" />
+		<entry key-ref="event.subscribe" value-ref="event.subscribe.responsebuilder" />
+		<entry key-ref="event.unsubscribe" value-ref="event.unsubscribe.responsebuilder" />
+		<entry key-ref="event.scan" value-ref="event.scan.responsebuilder" />
+		<entry key-ref="event.location" value-ref="event.location.responsebuilder" />
+		<entry key-ref="event.click" value-ref="event.click.responsebuilder" />
+		<entry key-ref="event.view" value-ref="event.view.responsebuilder" />
+	</util:map>
+
+	<context:component-scan base-package="com.beiwaiclass.weixin"
+		use-default-filters="false">
+		<context:include-filter type="annotation"
+			expression="org.springframework.stereotype.Service" />
+		<context:include-filter type="annotation"
+			expression="org.springframework.stereotype.Repository" />
+		<context:include-filter type="annotation"
+			expression="org.springframework.stereotype.Component" />
+	</context:component-scan>
 
 </beans>
