@@ -6,7 +6,7 @@ import org.jsoup.Jsoup;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.beiwaiclass.weixin.config.AccessTokenConfig;
+import com.beiwaiclass.weixin.config.DeveloperCenterConfig;
 
 public class AccessTokenHelper {
 
@@ -16,8 +16,8 @@ public class AccessTokenHelper {
 	public static String getAccessToken() {
 		String accesstoken = null;
 		try {
-			accesstoken = Jsoup.connect(AccessTokenConfig.REQUEST_URL).get()
-					.text();
+			accesstoken = Jsoup.connect(DeveloperCenterConfig.getRequestUrl())
+					.get().text();
 		} catch (IOException e) {
 			if (logger.isErrorEnabled()) {
 				logger.error("无法从中控服务器获取AccessToken", e);

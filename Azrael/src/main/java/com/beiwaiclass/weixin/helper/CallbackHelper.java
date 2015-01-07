@@ -30,7 +30,7 @@ public class CallbackHelper {
 	private static String BuildSortedParamString(String timestamp, String nonce) {
 		final StringBuilder builder = new StringBuilder();
 		final List<String> sortedStrList = new ArrayList<String>();
-		sortedStrList.add(DeveloperCenterConfig.TOKEN);
+		sortedStrList.add(DeveloperCenterConfig.getToken());
 		sortedStrList.add(timestamp);
 		sortedStrList.add(nonce);
 		Collections.sort(sortedStrList);
