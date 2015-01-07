@@ -1,9 +1,15 @@
 package com.beiwaiclass.weixin.helper;
 
+import java.io.IOException;
+import java.util.Properties;
+
 import net.sf.json.JSONObject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PropertiesLoaderUtils;
 
 public class AccessTokenHelper {
 
@@ -12,9 +18,9 @@ public class AccessTokenHelper {
 
 	private static String ACCESS_TOKEN = null;
 
-	private static String APP_ID = "wxd032fd57ca9a9a79";
+	private static String app_id = null;
 
-	private static String APP_SECRET = "587b241d21edec37b3badff8f179b0b6";
+	private static String app_secret = null;
 
 	public static String returnAccessToken() {
 		if (ACCESS_TOKEN == null) {
@@ -23,9 +29,43 @@ public class AccessTokenHelper {
 		return ACCESS_TOKEN;
 	}
 
+	private static String getAppID() {
+		if (app_id == null) {
+			Resource resource = new ClassPathResource(
+					"/META-INF/weixin.properties");
+			try {
+				Properties props = PropertiesLoaderUtils
+						.loadProperties(resource);
+				app_id = props.getProperty("app_id");
+			} catch (IOException e) {
+				if (logger.isErrorEnabled()) {
+					logger.error("无法从配置文件中获取服务器配置的APP_ID", e);
+				}
+			}
+		}
+		return app_id;
+	}
+
+	private static String getAppSecret() {
+		if (app_secret == null) {
+			Resource resource = new ClassPathResource(
+					"/META-INF/weixin.properties");
+			try {
+				Properties props = PropertiesLoaderUtils
+						.loadProperties(resource);
+				app_secret = props.getProperty("app_secret");
+			} catch (IOException e) {
+				if (logger.isErrorEnabled()) {
+					logger.error("无法从配置文件中获取服务器配置的APP_SECRET", e);
+				}
+			}
+		}
+		return app_secret;
+	}
+
 	public static void requestAccessToken() {
 		String url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid="
-				+ APP_ID + "&secret=" + APP_SECRET;
+				+ getAppID() + "&secret=" + getAppSecret();
 		String responseBody = null;
 		String access_token = null;
 		Long expires_in = 0l;
