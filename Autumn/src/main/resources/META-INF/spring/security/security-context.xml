@@ -17,32 +17,99 @@
 	</beans:bean>
 
 	<beans:bean id="filterSecurityInterceptor"
-		class="org.season.autumn.security.FilterSecurityInterceptor">
-		<beans:property name="accessDecisionManager" ref="accessDecisionManager" />
+		class="org.season.autumn.security.filter.FilterSecurityInterceptor">
+		<beans:property name="accessDecisionManager">
+			<beans:bean class="org.season.autumn.security.CustomAccessDecisionManager">
+			</beans:bean>
+		</beans:property>
 		<beans:property name="authenticationManager" ref="authenticationManager" />
-		<beans:property name="securityMetadataSource" ref="securityMetadataSource" />
+		<beans:property name="securityMetadataSource">
+			<beans:bean
+				class="org.season.autumn.security.CustomFilterInvocationSecurityMetadataSource">
+			</beans:bean>
+		</beans:property>
+	</beans:bean>
+
+	<beans:bean id="usernamePasswordAuthenticationFilter"
+		class="org.season.autumn.security.filter.UsernamePasswordAuthenticationFilter">
+		<!-- 校验登录是否有效的虚拟url -->
+		<!-- <beans:property name="filterProcessesUrl" value="/spring_security_form_check" 
+			/> -->
+		<beans:property name="requiresAuthenticationRequestMatcher">
+			<beans:bean
+				class="org.springframework.security.web.util.matcher.AntPathRequestMatcher">
+				<beans:constructor-arg name="pattern"
+					value="/spring_security_form_check" />
+			</beans:bean>
+		</beans:property>
+		<beans:property name="authenticationManager" ref="authenticationManager" />
+		<beans:property name="usernameParameter" value="spring_security_form_username" />
+		<beans:property name="passwordParameter" value="spring_security_form_password" />
+		<beans:property name="authenticationSuccessHandler">
+			<!-- 自定义登录成功后的处理handler -->
+			<beans:bean
+				class="org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler">
+				<!-- 登录成功后的默认url -->
+				<beans:property name="defaultTargetUrl" value="/" />
+			</beans:bean>
+		</beans:property>
+		<beans:property name="authenticationFailureHandler">
+			<beans:bean
+				class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler">
+				<!-- 登录失败后的默认Url -->
+				<beans:property name="defaultFailureUrl" value="/logout" />
+			</beans:bean>
+		</beans:property>
+	</beans:bean>
+
+	<beans:bean id="logoutFilter"
+		class="org.season.autumn.security.filter.LogoutFilter">
+		<!-- 处理退出的虚拟url -->
+		<!-- <beans:property name="filterProcessesUrl" value="/logout" /> -->
+		<beans:property name="logoutRequestMatcher">
+			<beans:bean
+				class="org.springframework.security.web.util.matcher.AntPathRequestMatcher">
+				<beans:constructor-arg name="pattern" value="/logout" />
+			</beans:bean>
+		</beans:property>
+		<!-- 退出处理成功后的默认显示url -->
+		<beans:constructor-arg index="0" value="/" />
+		<beans:constructor-arg index="1">
+			<!-- 退出成功后的handler列表 -->
+			<beans:array>
+				<beans:bean id="securityContextLogoutHandler"
+					class="org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler" />
+			</beans:array>
+		</beans:constructor-arg>
+	</beans:bean>
+
+	<beans:bean id="loginEntryPoint"
+		class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint">
+		<!-- 默认登录页的url -->
+		<beans:constructor-arg value="/login" />
 	</beans:bean>
 
 	<http pattern="/login" security="none" />
 
-	<http auto-config="true" use-expressions="true">
-		<form-login login-page="/login" />
-		<logout invalidate-session="true" logout-success-url="/"
-			logout-url="/logout" />
-		<remember-me key="autumn" services-ref="ipTokenBasedRememberMeServicesBean" />
+	<http entry-point-ref="loginEntryPoint">
+		<!-- <form-login login-page="/login" /> <logout invalidate-session="true" 
+			logout-success-url="/" logout-url="/logout" /> <remember-me key="autumn" 
+			services-ref="ipTokenBasedRememberMeServicesBean" /> <custom-filter ref="filterSecurityInterceptor" 
+			before="FILTER_SECURITY_INTERCEPTOR" /> -->
+		<custom-filter ref="logoutFilter" position="LOGOUT_FILTER" />
+		<custom-filter ref="usernamePasswordAuthenticationFilter"
+			position="FORM_LOGIN_FILTER" />
 		<custom-filter ref="filterSecurityInterceptor" before="FILTER_SECURITY_INTERCEPTOR" />
+
 	</http>
 
 	<authentication-manager alias="authenticationManager">
 		<authentication-provider user-service-ref="userService" />
+		<authentication-provider ref="customAuthenticationProvider" />
 	</authentication-manager>
 
-	<beans:bean name="accessDecisionManager"
-		class="org.season.autumn.security.CustomAccessDecisionManager">
-	</beans:bean>
-
-	<beans:bean name="securityMetadataSource"
-		class="org.season.autumn.security.CustomFilterInvocationSecurityMetadataSource">
+	<beans:bean id="customAuthenticationProvider"
+		class="org.season.autumn.security.CustomAuthenticationProvider">
 	</beans:bean>
 
 	<beans:bean id="userService"

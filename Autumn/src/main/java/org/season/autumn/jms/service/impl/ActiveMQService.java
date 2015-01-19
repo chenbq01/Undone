@@ -21,7 +21,7 @@ public class ActiveMQService implements MessageQueueService {
 	private JmsTemplate jmsTemplate;
 
 	@Override
-	public void sendMessage(Destination destination, String message) {
+	public void sendMessage(Destination destination, final String message) {
 
 		jmsTemplate.send(destination, new MessageCreator() {
 			public Message createMessage(Session session) throws JMSException {
@@ -33,7 +33,7 @@ public class ActiveMQService implements MessageQueueService {
 
 	@Override
 	public void sendMessage(Destination destination,
-			Map<String, String> mapmessage) {
+			final Map<String, String> mapmessage) {
 
 		jmsTemplate.send(destination, new MessageCreator() {
 			public Message createMessage(Session session) throws JMSException {
