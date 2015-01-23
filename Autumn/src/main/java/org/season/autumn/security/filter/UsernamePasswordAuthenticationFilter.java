@@ -21,6 +21,9 @@ public class UsernamePasswordAuthenticationFilter extends
 
 	public static final String SPRING_SECURITY_FORM_USERNAME_KEY = "j_username";
 	public static final String SPRING_SECURITY_FORM_PASSWORD_KEY = "j_password";
+	public static final String SPRING_SECURITY_FORM_QUESTION_KEY = "j_question";
+	public static final String SPRING_SECURITY_FORM_ANSWER_KEY = "j_answer";
+
 	/**
 	 * @deprecated If you want to retain the username, cache it in a customized
 	 *             {@code AuthenticationFailureHandler}
@@ -30,6 +33,8 @@ public class UsernamePasswordAuthenticationFilter extends
 
 	private String usernameParameter = SPRING_SECURITY_FORM_USERNAME_KEY;
 	private String passwordParameter = SPRING_SECURITY_FORM_PASSWORD_KEY;
+	private String questionParameter = SPRING_SECURITY_FORM_QUESTION_KEY;
+	private String answerParameter = SPRING_SECURITY_FORM_ANSWER_KEY;
 	private boolean postOnly = true;
 
 	// ~ Constructors
@@ -63,7 +68,7 @@ public class UsernamePasswordAuthenticationFilter extends
 		// 获取用户输入的下一句答案
 		String answer = obtainAnswer(request);
 		// 获取问题Id(即: hashTable的key)
-		Integer questionId = obtainQuestionId(request);
+		Integer question = obtainQuestion(request);
 
 		if (username == null) {
 			username = "";
@@ -81,7 +86,7 @@ public class UsernamePasswordAuthenticationFilter extends
 
 		// 这里将原来的UsernamePasswordAuthenticationToken换成我们自定义的CustomAuthenticationToken
 		CustomAuthenticationToken authRequest = new CustomAuthenticationToken(
-				username, password, questionId, answer);
+				username, password, question, answer);
 
 		// Allow subclasses to set the "details" property
 		setDetails(request, authRequest);
@@ -93,19 +98,16 @@ public class UsernamePasswordAuthenticationFilter extends
 		return request.getParameter(answerParameter);
 	}
 
-	protected Integer obtainQuestionId(HttpServletRequest request) {
-		return Integer.parseInt(request.getParameter(questionIdParameter));
+	protected Integer obtainQuestion(HttpServletRequest request) {
+		return Integer.parseInt(request.getParameter(questionParameter));
 	}
 
-	private String questionIdParameter = "questionId";
-	private String answerParameter = "answer";
-
-	public String getQuestionIdParameter() {
-		return questionIdParameter;
+	public String getQuestionParameter() {
+		return questionParameter;
 	}
 
-	public void setQuestionIdParameter(String questionIdParameter) {
-		this.questionIdParameter = questionIdParameter;
+	public void setQuestionParameter(String questionParameter) {
+		this.questionParameter = questionParameter;
 	}
 
 	public String getAnswerParameter() {

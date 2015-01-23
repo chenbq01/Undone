@@ -11,11 +11,11 @@ public class CustomAuthenticationToken extends
 			Integer questionId, String answer) {
 		super(principal, credentials);
 		this.answer = answer;
-		this.questionId = questionId;
+		this.question = questionId;
 	}
 
 	private String answer;
-	private Integer questionId;
+	private Integer question;
 
 	public String getAnswer() {
 		return answer;
@@ -26,11 +26,11 @@ public class CustomAuthenticationToken extends
 	}
 
 	public Integer getQuestionId() {
-		return questionId;
+		return question;
 	}
 
 	public void setQuestionId(Integer questionId) {
-		this.questionId = questionId;
+		this.question = questionId;
 	}
 
 }

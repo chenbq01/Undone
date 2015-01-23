@@ -7,6 +7,19 @@
 		http://www.springframework.org/schema/security
 		http://www.springframework.org/schema/security/spring-security.xsd">
 
+	<beans:bean id="rememberMeAuthenticationProvider"
+		class="org.springframework.security.authentication.RememberMeAuthenticationProvider">
+		<beans:constructor-arg name="key" value="autumn" />
+	</beans:bean>
+
+	<beans:bean id="rememberMeAuthenticationFilter"
+		class="org.season.autumn.security.filter.RememberMeAuthenticationFilter">
+		<beans:constructor-arg name="authenticationManager"
+			ref="authenticationManager" />
+		<beans:constructor-arg name="rememberMeServices"
+			ref="ipTokenBasedRememberMeServicesBean" />
+	</beans:bean>
+
 	<beans:bean class="org.season.autumn.security.IPTokenBasedRememberMeServices"
 		id="ipTokenBasedRememberMeServicesBean">
 		<beans:constructor-arg name="key" value="autumn" />
@@ -45,6 +58,11 @@
 		<beans:property name="authenticationManager" ref="authenticationManager" />
 		<beans:property name="usernameParameter" value="spring_security_form_username" />
 		<beans:property name="passwordParameter" value="spring_security_form_password" />
+		<beans:property name="questionParameter" value="spring_security_form_question" />
+		<beans:property name="answerParameter" value="spring_security_form_answer" />
+		<beans:property name="postOnly" value="true" />
+		<beans:property name="rememberMeServices"
+			ref="ipTokenBasedRememberMeServicesBean"></beans:property>
 		<beans:property name="authenticationSuccessHandler">
 			<!-- 自定义登录成功后的处理handler -->
 			<beans:bean
@@ -92,10 +110,13 @@
 	<http pattern="/login" security="none" />
 
 	<http entry-point-ref="loginEntryPoint">
-		<!-- <form-login login-page="/login" /> <logout invalidate-session="true" 
-			logout-success-url="/" logout-url="/logout" /> <remember-me key="autumn" 
-			services-ref="ipTokenBasedRememberMeServicesBean" /> <custom-filter ref="filterSecurityInterceptor" 
-			before="FILTER_SECURITY_INTERCEPTOR" /> -->
+		<!-- <form-login login-page="/login" /> -->
+		<!-- <logout invalidate-session="true" logout-success-url="/" logout-url="/logout" 
+			/> -->
+		<!-- <remember-me key="autumn" services-ref="ipTokenBasedRememberMeServicesBean" 
+			/> -->
+		<custom-filter ref="rememberMeAuthenticationFilter"
+			position="REMEMBER_ME_FILTER" />
 		<custom-filter ref="logoutFilter" position="LOGOUT_FILTER" />
 		<custom-filter ref="usernamePasswordAuthenticationFilter"
 			position="FORM_LOGIN_FILTER" />
@@ -103,13 +124,16 @@
 
 	</http>
 
-	<authentication-manager alias="authenticationManager">
-		<authentication-provider user-service-ref="userService" />
+	<authentication-manager alias="authenticationManager"
+		erase-credentials="false">
+		<!-- <authentication-provider user-service-ref="userService" /> -->
 		<authentication-provider ref="customAuthenticationProvider" />
+		<authentication-provider ref="rememberMeAuthenticationProvider" />
 	</authentication-manager>
 
 	<beans:bean id="customAuthenticationProvider"
 		class="org.season.autumn.security.CustomAuthenticationProvider">
+		<beans:property name="userDetailsService" ref="userService" />
 	</beans:bean>
 
 	<beans:bean id="userService"

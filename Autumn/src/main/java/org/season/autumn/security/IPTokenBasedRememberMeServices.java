@@ -5,6 +5,8 @@ import java.util.Arrays;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -14,6 +16,9 @@ import org.springframework.util.DigestUtils;
 
 public class IPTokenBasedRememberMeServices extends
 		TokenBasedRememberMeServices {
+
+	private static final Logger logger = LoggerFactory
+			.getLogger(IPTokenBasedRememberMeServices.class);
 
 	public IPTokenBasedRememberMeServices(String key,
 			UserDetailsService userDetailsService) {
@@ -49,6 +54,10 @@ public class IPTokenBasedRememberMeServices extends
 		if (ip == null || ip.length() == 0 || " unknown ".equalsIgnoreCase(ip)) {
 			ip = request.getRemoteAddr();
 		}
+		if (logger.isDebugEnabled()) {
+			logger.debug("UserIPAddress:" + ip);
+		}
+		System.out.println("UserIPAddress:" + ip);
 		return ip;
 	}
 
