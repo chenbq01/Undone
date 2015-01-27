@@ -7,11 +7,23 @@
 		http://www.springframework.org/schema/security
 		http://www.springframework.org/schema/security/spring-security.xsd">
 
-	<beans:bean id="rememberMeAuthenticationProvider"
-		class="org.springframework.security.authentication.RememberMeAuthenticationProvider">
-		<beans:constructor-arg name="key" value="autumn" />
+
+	<!-- 异常处理过滤器 -->
+	<beans:bean id="exceptionTranslationFilter"
+		class="org.springframework.security.web.access.ExceptionTranslationFilter">
+		<beans:constructor-arg name="authenticationEntryPoint"
+			ref="loginEntryPoint" />
+		<beans:property name="accessDeniedHandler">
+			<!-- 拒绝未授权访问跳转 -->
+			<beans:bean
+				class="org.springframework.security.web.access.AccessDeniedHandlerImpl">
+				<beans:property name="errorPage" value="/accessdenied" />
+			</beans:bean>
+		</beans:property>
 	</beans:bean>
 
+
+	<!-- 记住密码功能(COOKIE方式) -->
 	<beans:bean id="rememberMeAuthenticationFilter"
 		class="org.season.autumn.security.filter.RememberMeAuthenticationFilter">
 		<beans:constructor-arg name="authenticationManager"
@@ -20,26 +32,17 @@
 			ref="ipTokenBasedRememberMeServicesBean" />
 	</beans:bean>
 
-	<beans:bean class="org.season.autumn.security.IPTokenBasedRememberMeServices"
-		id="ipTokenBasedRememberMeServicesBean">
-		<beans:constructor-arg name="key" value="autumn" />
-		<beans:constructor-arg name="userDetailsService"
-			ref="userService" />
-		<beans:constructor-arg name="parameter" value="_remember_me" />
-		<beans:constructor-arg name="cookieName" value="REMEMBER_ME_COOKIE" />
-	</beans:bean>
-
 	<beans:bean id="filterSecurityInterceptor"
 		class="org.season.autumn.security.filter.FilterSecurityInterceptor">
+		<!-- 自定义资源权限关系认证 -->
 		<beans:property name="accessDecisionManager">
-			<beans:bean class="org.season.autumn.security.CustomAccessDecisionManager">
-			</beans:bean>
+			<beans:bean class="org.season.autumn.security.CustomAccessDecisionManager" />
 		</beans:property>
 		<beans:property name="authenticationManager" ref="authenticationManager" />
+		<!-- 自定义资源权限关系集合 -->
 		<beans:property name="securityMetadataSource">
 			<beans:bean
-				class="org.season.autumn.security.CustomFilterInvocationSecurityMetadataSource">
-			</beans:bean>
+				class="org.season.autumn.security.CustomFilterInvocationSecurityMetadataSource" />
 		</beans:property>
 	</beans:bean>
 
@@ -80,6 +83,7 @@
 		</beans:property>
 	</beans:bean>
 
+	<!-- 自定义注销过滤器 -->
 	<beans:bean id="logoutFilter"
 		class="org.season.autumn.security.filter.LogoutFilter">
 		<!-- 处理退出的虚拟url -->
@@ -101,13 +105,46 @@
 		</beans:constructor-arg>
 	</beans:bean>
 
+	<!-- 自定义RememberMeServices -->
+	<beans:bean class="org.season.autumn.security.IPTokenBasedRememberMeServices"
+		id="ipTokenBasedRememberMeServicesBean">
+		<beans:constructor-arg name="key" value="autumn" />
+		<beans:constructor-arg name="userDetailsService"
+			ref="userService" />
+		<beans:constructor-arg name="parameter" value="_remember_me" />
+		<beans:constructor-arg name="cookieName" value="REMEMBER_ME_COOKIE" />
+	</beans:bean>
+
+	<!-- 自定义UserDetailsService -->
+	<beans:bean id="userService"
+		class="org.season.autumn.security.CustomUserDetailsService">
+	</beans:bean>
+
+	<beans:bean id="customAuthenticationProvider"
+		class="org.season.autumn.security.CustomAuthenticationProvider">
+		<beans:property name="userDetailsService" ref="userService" />
+	</beans:bean>
+
+	<beans:bean id="rememberMeAuthenticationProvider"
+		class="org.springframework.security.authentication.RememberMeAuthenticationProvider">
+		<beans:constructor-arg name="key" value="autumn" />
+	</beans:bean>
+
+	<authentication-manager alias="authenticationManager"
+		erase-credentials="false">
+		<!-- <authentication-provider user-service-ref="userService" /> -->
+		<authentication-provider ref="customAuthenticationProvider" />
+		<authentication-provider ref="rememberMeAuthenticationProvider" />
+	</authentication-manager>
+
+	<http pattern="/login" security="none" />
+	<http pattern="/accessdenied" security="none" />
+
 	<beans:bean id="loginEntryPoint"
 		class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint">
 		<!-- 默认登录页的url -->
 		<beans:constructor-arg value="/login" />
 	</beans:bean>
-
-	<http pattern="/login" security="none" />
 
 	<http entry-point-ref="loginEntryPoint">
 		<!-- <form-login login-page="/login" /> -->
@@ -120,24 +157,9 @@
 		<custom-filter ref="logoutFilter" position="LOGOUT_FILTER" />
 		<custom-filter ref="usernamePasswordAuthenticationFilter"
 			position="FORM_LOGIN_FILTER" />
+		<custom-filter ref="exceptionTranslationFilter" after="EXCEPTION_TRANSLATION_FILTER" /><!-- 
+			一定是after否则会被覆盖不起作用 -->
 		<custom-filter ref="filterSecurityInterceptor" before="FILTER_SECURITY_INTERCEPTOR" />
-
 	</http>
-
-	<authentication-manager alias="authenticationManager"
-		erase-credentials="false">
-		<!-- <authentication-provider user-service-ref="userService" /> -->
-		<authentication-provider ref="customAuthenticationProvider" />
-		<authentication-provider ref="rememberMeAuthenticationProvider" />
-	</authentication-manager>
-
-	<beans:bean id="customAuthenticationProvider"
-		class="org.season.autumn.security.CustomAuthenticationProvider">
-		<beans:property name="userDetailsService" ref="userService" />
-	</beans:bean>
-
-	<beans:bean id="userService"
-		class="org.season.autumn.security.CustomUserDetailsService">
-	</beans:bean>
 
 </beans:beans>

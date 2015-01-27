@@ -1,7 +1,11 @@
 package org.season.autumn.controller;
 
+import java.text.DateFormat;
+import java.util.Date;
 import java.util.Locale;
 import java.util.Random;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.season.autumn.security.LoginQuestion;
 import org.slf4j.Logger;
@@ -27,6 +31,24 @@ public class LoginLogoutController {
 		model.addAttribute("question",
 				LoginQuestion.getQuestions().get(questionId).split("/")[0]);
 		return "login";
+	}
+
+	@RequestMapping(method = RequestMethod.GET, value = "/accessdenied")
+	public String accessDenied(Locale locale, Model model, HttpServletRequest request) {
+		
+		Date date = new Date();
+		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
+		
+		String formattedDate = dateFormat.format(date);
+		
+		model.addAttribute("serverTime", formattedDate );
+		/*
+		 * AccessDeniedException ex = (AccessDeniedException) request
+		 * .getAttribute
+		 * (AccessDeniedHandlerImpl.SPRING_SECURITY_ACCESS_DENIED_EXCEPTION_KEY
+		 * );
+		 */
+		return "accessdenied";
 	}
 
 }
