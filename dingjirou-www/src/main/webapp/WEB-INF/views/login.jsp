@@ -14,7 +14,7 @@
 		id="spring_security_form_captcha" name="spring_security_form_captcha"
 		size="20" maxlength="50" type="text" /> <img id="captchaImg"
 		src="<c:url value="/captcha"/>" style="vertical-align: middle;"
-		height="30" width="80" /><br />
+		height="30" width="80" /><a href="javascript:void(0);" onclick="javascript:document.getElementById('captchaImg').src='<c:url value="/captcha"/>';">看不清换一张</a><br />
 	<input id="spring_security_form_rememberme"
 		name="spring_security_form_rememberme" type="checkbox" value="true" />
 	<label for="spring_security_form_rememberme">Remember Me?</label> <br />
