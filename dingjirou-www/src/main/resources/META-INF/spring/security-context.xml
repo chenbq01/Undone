@@ -7,6 +7,8 @@
 		http://www.springframework.org/schema/security
 		http://www.springframework.org/schema/security/spring-security.xsd">
 
+	<global-method-security pre-post-annotations="enabled" />
+
 	<!-- 自定义表单验证过滤器 支持用户名、密码和校验码验证 -->
 	<beans:bean id="usernamePasswordCaptchaAuthenticationFilter"
 		class="org.springframework.security.web.extension.captcha.authentication.UsernamePasswordCaptchaAuthenticationFilter">
@@ -86,6 +88,7 @@
 		<authentication-provider>
 			<user-service>
 				<user authorities="ROLE_USER" name="guest" password="guest" />
+				<user authorities="ROLE_ADMIN" name="admin" password="admin" />
 			</user-service>
 		</authentication-provider>
 	</authentication-manager>
@@ -107,7 +110,7 @@
 
 	<http use-expressions="true" access-denied-page="/accessdenied"
 		entry-point-ref="loginEntryPoint">
-		<intercept-url pattern="/*" access="hasRole('ROLE_USER')" />
+		<intercept-url pattern="/*" access="isAuthenticated()" />
 
 		<logout invalidate-session="true" logout-success-url="/"
 			logout-url="/logout" />
